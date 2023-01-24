@@ -1,10 +1,13 @@
-const contactsOperation = require("../models/contacts");
+const contactsOperation = require("../services/contactsServices");
 const contactsSchema = require("../schemas/contacts");
 const MyError = require("../utils/errors");
 
+const { listContacts, getContById, removeContact, addContact, updateCont } =
+  contactsOperation;
+
 const getContacts = async (req, res, next) => {
   try {
-    const contacts = await contactsOperation.listContacts();
+    const contacts = await listContacts();
     res.json(contacts);
   } catch (error) {
     next(error);
@@ -14,7 +17,7 @@ const getContacts = async (req, res, next) => {
 const getContactById = async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const contact = await contactsOperation.getContactById(contactId);
+    const contact = await getContById(contactId);
 
     if (!contact) {
       return next(new MyError(`Contact with id: ${contactId} not found`, 404));
@@ -34,7 +37,7 @@ const addNewContact = async (req, res, next) => {
       return next(new MyError("missing required name field", 400));
     }
 
-    const contact = await contactsOperation.addContact(req.body);
+    const contact = await addContact(req.body);
 
     res.status(201).json(contact);
   } catch (error) {
@@ -45,7 +48,7 @@ const addNewContact = async (req, res, next) => {
 const deleteContact = async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const contact = await contactsOperation.removeContact(contactId);
+    const contact = await removeContact(contactId);
 
     if (!contact) {
       return next(new MyError("Not found", 404));
@@ -71,7 +74,7 @@ const updateContact = async (req, res, next) => {
     }
 
     const { contactId } = req.params;
-    const contact = await contactsOperation.updateContact(contactId, req.body);
+    const contact = await updateCont(contactId, req.body);
 
     if (!contact) {
       return next(new MyError("Not found", 404));

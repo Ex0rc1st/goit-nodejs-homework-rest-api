@@ -10,7 +10,7 @@ const listContacts = async () => {
   return parsedContacts;
 };
 
-const getContactById = async (contactId) => {
+const getContById = async (contactId) => {
   const contacts = await listContacts();
   const getContact = contacts.find((item) => item.id === String(contactId));
 
@@ -44,7 +44,7 @@ const addContact = async (body) => {
   return newContact;
 };
 
-const updateContact = async (contactId, body) => {
+const updateCont = async (contactId, body) => {
   const contacts = await listContacts();
   const idx = contacts.findIndex((contact) => contact.id === String(contactId));
 
@@ -60,8 +60,8 @@ const updateContact = async (contactId, body) => {
 
 module.exports = {
   listContacts,
-  getContactById,
+  getContById,
   removeContact,
   addContact,
-  updateContact,
+  updateCont,
 };
