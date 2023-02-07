@@ -13,7 +13,9 @@ const {
   logoutUser,
   getCurrentUser,
   updateUserSubscription,
+  updateAvatar,
 } = require("../../controllers/users");
+const upload = require("../../middleware/upload");
 
 router.post("/register", validation(userValidationSchema), registerUser);
 router.post("/login", validation(userValidationSchema), loginUser);
@@ -25,5 +27,6 @@ router.patch(
   validation(subscriptionUserValidationSchema),
   updateUserSubscription
 );
+router.patch("/avatars", auth, upload.single("avatar"), updateAvatar);
 
 module.exports = router;
